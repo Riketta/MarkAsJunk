@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <MarkAsJunk.SettingsCategory>Mark as Junk</MarkAsJunk.SettingsCategory>
+
+  <MarkAsJunk.Enabled>Enabled</MarkAsJunk.Enabled>
+  <MarkAsJunk.Enabled.Tip>Master switch. While off, no storage routing happens, gizmos are hidden and smelter junk bills find no ingredients; all marks and dump flags are kept and reapplied when re-enabled.</MarkAsJunk.Enabled.Tip>
+
+  <MarkAsJunk.DebugLevel>Debug logging: {0}</MarkAsJunk.DebugLevel>
+  <MarkAsJunk.DebugLevel.Tip>Cycles Off / Basic / Verbose.\n\nBasic logs marks, dump flags and routing recomputes. Verbose additionally logs every storage acceptance override (very spammy - only for hunting a specific issue).</MarkAsJunk.DebugLevel.Tip>
+
+  <MarkAsJunk.RequireJunkStorage>Junk needs an existing dump</MarkAsJunk.RequireJunkStorage>
+  <MarkAsJunk.RequireJunkStorage.Tip>On: junk-marked items are kept out of normal storage only while at least one junk dump exists on their map - otherwise they flow normally.\n\nOff: junk-marked items are always kept out of normal storage, even with no dump anywhere (they then simply stay where they are).</MarkAsJunk.RequireJunkStorage.Tip>
+
+  <MarkAsJunk.SmelterRecipes>Add smelter junk bills</MarkAsJunk.SmelterRecipes>
+  <MarkAsJunk.SmelterRecipes.Tip>Adds "smelt/destroy junk" and "destroy junk" bills to electric smelters. They accept only items marked as junk: smeltable things return part of their resources, everything else is simply destroyed. Existing bills are unaffected when turned off.</MarkAsJunk.SmelterRecipes.Tip>
+
+  <MarkAsJunk.LogOverview>Log junk overview</MarkAsJunk.LogOverview>
+  <MarkAsJunk.LogOverview.Tip>Writes one block per loaded map to the log: every junk dump and the count of junk-marked items.</MarkAsJunk.LogOverview.Tip>
+
+  <MarkAsJunk.BehaviorNote>Mark items with the junk toggle on the item (next to allow/forbidden). Select a stockpile zone or storage building and toggle "Junk dump" to also accept marked items there; toggle "Mark contents as junk" to auto-mark everything stored in it. A dump keeps storing its whitelisted items as usual; normal storage rejects junk while a dump exists. Smelters offer bills to smelt or destroy marked junk.</MarkAsJunk.BehaviorNote>
+
+  <MarkAsJunk.MarkJunk>Mark as junk</MarkAsJunk.MarkJunk>
+  <MarkAsJunk.MarkJunk.DescOff>Mark this item as junk. Haulers will keep it out of normal storage and carry it to a storage flagged as a junk dump.</MarkAsJunk.MarkJunk.DescOff>
+  <MarkAsJunk.MarkJunk.DescOn>Marked as junk. Haulers carry this to a junk dump and keep it out of normal storage. Unmark to return it to normal storage.</MarkAsJunk.MarkJunk.DescOn>
+  <MarkAsJunk.MarkedInspect>Marked as junk</MarkAsJunk.MarkedInspect>
+
+  <MarkAsJunk.JunkStorage>Junk dump</MarkAsJunk.JunkStorage>
+  <MarkAsJunk.JunkStorage.DescOff>Flag this storage as a junk dump. It keeps working as normal storage for everything its filter allows, and additionally accepts items marked as junk - which every other storage on this map will then reject (the filter applies to junk too).</MarkAsJunk.JunkStorage.DescOff>
+  <MarkAsJunk.JunkStorage.DescOn>Flagged as a junk dump: keeps storing everything its filter allows, and additionally accepts items marked as junk that other storage rejects.</MarkAsJunk.JunkStorage.DescOn>
+
+  <MarkAsJunk.Junkify>Mark contents as junk</MarkAsJunk.Junkify>
+  <MarkAsJunk.Junkify.DescOff>Automatically mark every item stored here as junk, so haulers carry it on to a junk dump (this stockpile rejects marked items like any other normal storage). Items already stored are marked immediately; the marks are permanent until items are unmarked individually.</MarkAsJunk.Junkify.DescOff>
+  <MarkAsJunk.Junkify.DescOn>Every item stored here is automatically marked as junk. The marks stay on items even after they leave or this is switched off - unmark items individually to keep them out of the junk flow.</MarkAsJunk.Junkify.DescOn>
+</LanguageData>

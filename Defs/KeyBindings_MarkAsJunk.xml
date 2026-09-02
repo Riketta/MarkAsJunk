@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Optional, unbound by default; shows up in Options -> Keyboard shortcuts under Miscellaneous. -->
+  <KeyBindingDef>
+    <defName>MarkAsJunkToggle</defName>
+    <label>toggle junk mark</label>
+    <category>Misc</category>
+  </KeyBindingDef>
+</Defs>

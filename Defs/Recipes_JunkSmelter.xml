@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Junk processing for the electric smelter. Mirrors vanilla SmeltOrDestroyThing:
+       SpecialProductType.Smelted yields resources from smeltable things and simply
+       consumes (destroys) everything else. The ingredient filter is a C# subclass
+       (ThingFilter_JunkOnly) because "marked as junk" is per-thing state that no
+       def-level filter field can express. -->
+  <RecipeDef>
+    <defName>MarkAsJunk_SmeltOrDestroyJunk</defName>
+    <label>smelt/destroy junk</label>
+    <description>Break down items marked as junk. Smeltable things yield part of their resources; everything else is destroyed. Only accepts items marked as junk.</description>
+    <jobString>Smelting/destroying junk.</jobString>
+    <workAmount>400</workAmount>
+    <smeltingWorkAmount>1600</smeltingWorkAmount>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>Smelt</effectWorking>
+    <soundWorking>Recipe_Smelt</soundWorking>
+    <specialProducts>
+      <li>Smelted</li>
+    </specialProducts>
+    <ignoreIngredientCountTakeEntireStacks>true</ignoreIngredientCountTakeEntireStacks>
+    <ingredients>
+      <li>
+        <filter Class="MarkAsJunk.ThingFilter_JunkOnly">
+          <categories>
+            <li>Root</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Root</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>Root</li>
+      </categories>
+    </defaultIngredientFilter>
+    <recipeUsers>
+      <li>ElectricSmelter</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Pure destruction with no resource recovery; faster than smelting and
+       takes whole stacks per bill, mirroring vanilla destroy recipes. -->
+  <RecipeDef>
+    <defName>MarkAsJunk_DestroyJunk</defName>
+    <label>destroy junk</label>
+    <description>Destroy items marked as junk. Faster than smelting and works on everything, but yields no resources. Only accepts items marked as junk.</description>
+    <jobString>Destroying junk.</jobString>
+    <workAmount>60</workAmount>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>Smelt</effectWorking>
+    <soundWorking>Recipe_Smelt</soundWorking>
+    <ignoreIngredientCountTakeEntireStacks>true</ignoreIngredientCountTakeEntireStacks>
+    <ingredients>
+      <li>
+        <filter Class="MarkAsJunk.ThingFilter_JunkOnly">
+          <categories>
+            <li>Root</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Root</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>Root</li>
+      </categories>
+    </defaultIngredientFilter>
+    <recipeUsers>
+      <li>ElectricSmelter</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>
