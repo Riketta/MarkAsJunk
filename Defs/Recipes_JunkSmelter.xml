@@ -45,8 +45,10 @@
     </recipeUsers>
   </RecipeDef>
 
-  <!-- Pure destruction with no resource recovery; faster than smelting and
-       takes whole stacks per bill, mirroring vanilla destroy recipes. -->
+  <!-- Pure destruction with no resource recovery, much faster than smelting.
+       Both junk recipes take whole stacks per bill (the
+       ignoreIngredientCountTakeEntireStacks flag), mirroring vanilla destroy
+       recipes. -->
   <RecipeDef>
     <defName>MarkAsJunk_DestroyJunk</defName>
     <label>destroy junk</label>

@@ -28,10 +28,10 @@ time.
    away, anything dropped in later on arrival. Since normal storage rejects
    junk, this turns the stockpile into a conveyor that feeds your dumps.
    Marks stay until items are unmarked individually.
-4. **Smelt or destroy junk** - electric smelters gain two bills:
-   **smelt/destroy junk** (smeltable things return part of their resources,
-   everything else is destroyed) and **destroy junk** (faster, whole stacks,
-   no resources).
+4. **Smelt or destroy junk** - electric smelters gain two bills, both
+   consuming whole stacks: **smelt/destroy junk** (smeltable things return
+   part of their resources, everything else is destroyed) and **destroy
+   junk** (much faster, no resources).
 5. **Let colonists toss their own rags (optional)** - with a restrictive
    apparel policy (e.g. hit points above 50%), a colonist taking off apparel
    that no longer passes it drops it straight to the junk flow. Apparel
@@ -57,9 +57,11 @@ simply flows back into normal storage. Nothing is marked by default.
 ## Known limitations
 
 - Items that vanilla cannot forbid (no comp support) cannot be marked.
-- Routing only steers *storage* - eating, trading, caravan loading and
-  regular bills ignore junk (the smelter junk bills pull marked items on
-  purpose).
+- Junk avoidance applies anywhere the game consults storage acceptance, not
+  just hauling: while a dump exists, growth vats and biosculpter pods refuse
+  junk-marked nutrition and turrets refuse junk-marked shells (a loaded one
+  is extracted). Eating, trading, caravan loading and regular bills ignore
+  junk (the smelter junk bills pull marked items on purpose).
 - Smelter bills are only added to the vanilla electric smelter.
 - A junk dump is always also normal storage for its filter; restrict its
   filter and priority to approximate a dedicated junkyard.
