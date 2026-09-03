@@ -10,7 +10,9 @@
 
 Mark items (or whole stacks, corpses, minified furniture - anything haulable, from any mod or DLC) with the junk toggle on the item itself, exactly like forbidding. Flag a dump by selecting a stockpile zone or shelf and toggling "Junk dump" next to the copy/paste storage gizmos: the dump keeps storing everything its filter whitelists and additionally accepts junk, while every other storage rejects junk while a dump exists (configurable). A second toggle, "Mark contents as junk", automatically marks everything stored in a stockpile, so it acts as a conveyor into your junk dumps. Both storage flags travel with copy/pasted storage settings. Smelters get "smelt/destroy junk" (recovers resources from smeltable things, destroys the rest) and "destroy junk" (fast, whole stacks, no resources); both feed exclusively on marked items and can be disabled in mod settings.
 
-Nothing is hardcoded to specific defs: the junk comp is attached to every haulable thing at runtime, storage routing hooks the shared acceptance check all zones, shelves and modded storages already use, and the smelter recipes attach through vanilla's recipeUsers mechanism. Optional layered debug logging is available in mod settings, plus a one-click junk overview.</description>
+Nothing is hardcoded to specific defs: the junk comp is attached to every haulable thing at runtime, storage routing hooks the shared acceptance check all zones, shelves and modded storages already use, and the smelter recipes attach through vanilla's recipeUsers mechanism. Optional layered debug logging is available in mod settings, plus a one-click junk overview.
+
+Source code &amp; details: https://github.com/Riketta/MarkAsJunk</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>
