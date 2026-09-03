@@ -3,8 +3,9 @@
 A RimWorld 1.6 mod for sorting loot you don't care about. Mark any haulable
 item as **junk**, designate junk dumps, and your colonists keep junk out of
 normal storage and carry it to the dumps instead. Optional extras: a
-stockpile toggle that auto-marks everything stored in it, and smelter bills
-that smelt or destroy junk.
+stockpile toggle that auto-marks everything stored in it, auto-marking of the
+ragged apparel colonists discard, and smelter bills that smelt or destroy
+junk.
 
 Requires [Harmony](https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077).
 Works with all DLC and mods by design, and is safe to add or remove at any
@@ -31,6 +32,10 @@ time.
    **smelt/destroy junk** (smeltable things return part of their resources,
    everything else is destroyed) and **destroy junk** (faster, whole stacks,
    no resources).
+5. **Let colonists toss their own rags (optional)** - with a restrictive
+   apparel policy (e.g. hit points above 50%), a colonist taking off apparel
+   that no longer passes it drops it straight to the junk flow. Apparel
+   swapped for a better piece is never touched.
 
 While a dump exists on a map, all other storage there rejects junk, so pawns
 actively sort junk out of your main stockpiles. Remove the last dump and junk
@@ -43,6 +48,9 @@ simply flows back into normal storage. Nothing is marked by default.
   storage while a dump exists somewhere on its map, so items can never be
   stranded. Turn off to always exclude junk from normal storage.
 - **Add smelter junk bills** (default on) - show/hide the smelter recipes.
+- **Auto-mark discarded apparel** (default on) - apparel taken off because it
+  fails the wearer's apparel policy is marked as junk; pieces swapped for
+  better ones never are.
 - **Debug logging** - Off / Basic / Verbose, plus a one-click **junk
   overview** that lists all dumps, auto-mark storages and marked items.
 
@@ -74,7 +82,10 @@ For modders and the curious - no def, DLC or mod lists are hardcoded:
   and factions stay vanilla.
 - Auto-marking hooks item arrival at the shared choke points
   `Thing.SpawnSetup`, `SlotGroup.Notify_AddedCell` and
-  `StorageGroupUtility.SetStorageGroup`.
+  `StorageGroupUtility.SetStorageGroup`; discarded apparel hooks the one
+  overload all worn-apparel ground drops funnel through
+  (`Pawn_ApparelTracker.TryDrop`), deciding junk vs. upgrade with the pawn's
+  own apparel policy filter.
 - The smelter bills are two `RecipeDef`s attached through `recipeUsers`.
   Their ingredient filter is a small `ThingFilter` subclass
   (`ThingFilter_JunkOnly`), because "marked as junk" is per-thing state that

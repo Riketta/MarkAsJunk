@@ -31,6 +31,12 @@ namespace MarkAsJunk
         /// to electric smelters (default true).</summary>
         public bool smelterRecipes = true;
 
+        /// <summary>Auto-mark apparel pawns take off because it no longer
+        /// passes their apparel policy (e.g. tattered). Apparel swapped out
+        /// for a better piece still passes the policy and is never marked
+        /// (default true).</summary>
+        public bool autoMarkDroppedGear = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -38,6 +44,7 @@ namespace MarkAsJunk
             Scribe_Values.Look(ref debugLevel, "debugLevel", (int)DebugLogLevel.Off);
             Scribe_Values.Look(ref routeOnlyWithJunkStorage, "routeOnlyWithJunkStorage", true);
             Scribe_Values.Look(ref smelterRecipes, "smelterRecipes", true);
+            Scribe_Values.Look(ref autoMarkDroppedGear, "autoMarkDroppedGear", true);
         }
     }
 
@@ -56,6 +63,9 @@ namespace MarkAsJunk
         public static bool RejectJunkInNormalStorageOnlyWithDump =>
             Settings?.routeOnlyWithJunkStorage ?? true;
 
+        /// <summary>Convenience for the "auto-mark discarded gear" setting.</summary>
+        public static bool AutoMarkDroppedGear => Settings?.autoMarkDroppedGear ?? true;
+
         public MarkAsJunkMod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<MarkAsJunkSettings>();
@@ -73,6 +83,7 @@ namespace MarkAsJunk
             PatchSafe(harmony, typeof(Patch_Thing_SpawnSetup));
             PatchSafe(harmony, typeof(Patch_SlotGroup_NotifyAddedCell));
             PatchSafe(harmony, typeof(Patch_StorageGroupUtility_SetStorageGroup));
+            PatchSafe(harmony, typeof(Patch_ApparelTracker_TryDrop));
             PatchSafe(harmony, typeof(Patch_RecipeDef_WorkAmountTotal));
             DebugLog.Message("loaded (enabled=" + (Settings.enabled ? "true" : "false")
                 + ", debugLevel=" + (DebugLogLevel)Settings.debugLevel + ").");
@@ -113,6 +124,9 @@ namespace MarkAsJunk
             list.Gap(6f);
 
             list.CheckboxLabeled("MarkAsJunk.RequireJunkStorage".Translate(), ref Settings.routeOnlyWithJunkStorage, "MarkAsJunk.RequireJunkStorage.Tip".Translate());
+            list.Gap(6f);
+
+            list.CheckboxLabeled("MarkAsJunk.AutoMarkDroppedGear".Translate(), ref Settings.autoMarkDroppedGear, "MarkAsJunk.AutoMarkDroppedGear.Tip".Translate());
             list.Gap(6f);
 
             bool smelterRecipes = Settings.smelterRecipes;
