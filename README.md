@@ -97,13 +97,12 @@ For modders and the curious - no def, DLC or mod lists are hardcoded:
 
 ## Build from source
 
-Requires the .NET SDK and a RimWorld 1.6 install (plus the Steam Harmony mod
-for the `0Harmony.dll` reference). Build the Release configuration for the dll you
+Requires the .NET SDK and a RimWorld 1.6 install. Build the Release configuration for the dll you
 ship - a plain `dotnet build` defaults to Debug:
 
 ```
 cd Source/MarkAsJunk
-dotnet build -c Release -p:RimWorldDir="C:\Path\To\RimWorld" [-p:HarmonyDir="C:\Path\To\Harmony"]
+dotnet build -c Release -p:RimWorldDir="C:\Path\To\RimWorld"
 ```
 
 The output lands in `Assemblies/MarkAsJunk.dll`. Copy or symlink the whole
