@@ -127,9 +127,7 @@ namespace MarkAsJunk
         /// the world, the way forbidden items show one. Vanilla's OverlayDrawer
         /// only supports a closed set of hardcoded overlay types, so this draws
         /// its own quad (same MetaOverlay shader and mesh size as the forbidden
-        /// icon). Positioned at the top of the cell while the forbidden icon
-        /// sits at the bottom, so an item that is both forbidden and junk shows
-        /// both icons without overlap. The material is built once from the
+        /// icon), centered on the item. The material is built once from the
         /// shared gizmo icon (with its fallback) and reused.</summary>
         public static void DrawJunkOverlay(Thing t)
         {
@@ -138,7 +136,7 @@ namespace MarkAsJunk
                 junkOverlayMatInt = MaterialPool.MatFrom(GizmoIcon, ShaderDatabase.MetaOverlay, Color.white);
             }
             Vector3 drawPos = t.DrawPos;
-            drawPos.z += t.RotatedSize.z * 0.25f;
+            drawPos.z += 0.05f;
             drawPos.y = AltitudeLayer.MetaOverlays.AltitudeFor() + 0.15f;
             Graphics.DrawMesh(MeshPool.plane05, drawPos, Quaternion.identity, junkOverlayMatInt, 0);
         }
