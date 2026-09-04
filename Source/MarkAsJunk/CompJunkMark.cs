@@ -34,6 +34,7 @@ namespace MarkAsJunk
                     return;
                 }
                 markedJunkInt = value;
+                JunkMarkUtility.OverlayNotifySpawnState(parent, parent.MapHeld, value);
                 // Acceptance and stack-mergeability of this item just changed
                 // everywhere; make the listers re-evaluate it so pawns pick the
                 // job up (or drop it) immediately instead of waiting for the

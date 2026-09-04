@@ -17,7 +17,8 @@ time.
    furniture - any mod or DLC) and hit **Mark as junk**, the toggle next to
    the vanilla allow/forbidden button. It behaves like forbidding: stack
    splits keep the mark, junk never merges into non-junk stacks, and the
-   inspect line shows the state. An optional hotkey is available under
+   inspect line shows the state, with a small icon drawn over marked items
+   in the world. An optional hotkey is available under
    *Options -> Keyboard shortcuts*.
 2. **Flag a junk dump** - select a stockpile zone or storage building and
    hit **Junk dump**. A dump keeps working as normal storage for everything
@@ -51,6 +52,8 @@ simply flows back into normal storage. Nothing is marked by default.
 - **Auto-mark discarded apparel** (default on) - apparel taken off because it
   fails the wearer's apparel policy is marked as junk; pieces swapped for
   better ones never are.
+- **Show junk icon on items** (default on) - the small world overlay icon on
+  marked items.
 - **Debug logging** - Off / Basic / Verbose, plus a one-click **junk
   overview** that lists all dumps, auto-mark storages and marked items.
 

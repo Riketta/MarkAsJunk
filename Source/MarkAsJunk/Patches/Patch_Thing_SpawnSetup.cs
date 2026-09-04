@@ -22,6 +22,17 @@ namespace MarkAsJunk
         {
             try
             {
+                // Overlay registry: runs for every spawn, including the save
+                // load pass (respawningAfterLoad), which is what rebuilds the
+                // registry after loading.
+                if (__instance is ThingWithComps thingWithComps)
+                {
+                    CompJunkMark junkComp = thingWithComps.GetComp<CompJunkMark>();
+                    if (junkComp != null)
+                    {
+                        JunkMarkUtility.OverlayNotifySpawnState(__instance, map, junkComp.MarkedJunk);
+                    }
+                }
                 if (respawningAfterLoad || !MarkAsJunkMod.Active || __instance.def.category != ThingCategory.Item)
                 {
                     return;

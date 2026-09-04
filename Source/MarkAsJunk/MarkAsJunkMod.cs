@@ -37,6 +37,10 @@ namespace MarkAsJunk
         /// (default true).</summary>
         public bool autoMarkDroppedGear = true;
 
+        /// <summary>Draws a small icon over junk-marked items in the world,
+        /// mirroring vanilla's forbidden overlay (default true).</summary>
+        public bool showJunkIcon = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -45,6 +49,7 @@ namespace MarkAsJunk
             Scribe_Values.Look(ref routeOnlyWithJunkStorage, "routeOnlyWithJunkStorage", true);
             Scribe_Values.Look(ref smelterRecipes, "smelterRecipes", true);
             Scribe_Values.Look(ref autoMarkDroppedGear, "autoMarkDroppedGear", true);
+            Scribe_Values.Look(ref showJunkIcon, "showJunkIcon", true);
         }
     }
 
@@ -66,6 +71,9 @@ namespace MarkAsJunk
         /// <summary>Convenience for the "auto-mark discarded gear" setting.</summary>
         public static bool AutoMarkDroppedGear => Settings?.autoMarkDroppedGear ?? true;
 
+        /// <summary>Convenience for the "junk overlay icon" setting.</summary>
+        public static bool ShowJunkIcon => Settings?.showJunkIcon ?? true;
+
         public MarkAsJunkMod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<MarkAsJunkSettings>();
@@ -84,6 +92,7 @@ namespace MarkAsJunk
             PatchSafe(harmony, typeof(Patch_SlotGroup_NotifyAddedCell));
             PatchSafe(harmony, typeof(Patch_StorageGroupUtility_SetStorageGroup));
             PatchSafe(harmony, typeof(Patch_ApparelTracker_TryDrop));
+            PatchSafe(harmony, typeof(Patch_DynamicDrawManager_DrawDynamicThings));
             PatchSafe(harmony, typeof(Patch_RecipeDef_WorkAmountTotal));
             DebugLog.Message("loaded (enabled=" + (Settings.enabled ? "true" : "false")
                 + ", debugLevel=" + (DebugLogLevel)Settings.debugLevel + ").");
@@ -136,6 +145,9 @@ namespace MarkAsJunk
                 Settings.smelterRecipes = smelterRecipes;
                 SmelterJunkRecipes.ApplyVisibility();
             }
+            list.Gap(6f);
+
+            list.CheckboxLabeled("MarkAsJunk.ShowJunkIcon".Translate(), ref Settings.showJunkIcon, "MarkAsJunk.ShowJunkIcon.Tip".Translate());
             list.Gap(12f);
 
             Rect overviewRect = list.GetRect(30f);

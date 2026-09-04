@@ -11,7 +11,7 @@ Mark any item as junk and let your colonists do the sorting: haulers keep junk o
 [h3]What it does[/h3]
 [b]Junk marking[/b]
 [list][*]Every haulable thing gains an extra toggle right next to the vanilla allow/forbidden button - loot, corpses, minified furniture, anything from any mod or DLC.
-[*]It behaves exactly like forbidding: stack splits keep the mark, junk never merges into non-junk stacks, and the inspect line shows the state. An optional hotkey is available under Options -> Keyboard shortcuts.
+[*]It behaves exactly like forbidding: stack splits keep the mark, junk never merges into non-junk stacks, and the inspect line shows the state. Marked items also display a small junk icon in the world, just like forbidden items do. An optional hotkey is available under Options -> Keyboard shortcuts.
 [*]Unmark an item to return it to normal storage.[/list]
 
 [b]Junk dumps[/b]

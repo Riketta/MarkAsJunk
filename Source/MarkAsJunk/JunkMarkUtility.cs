@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -78,17 +80,6 @@ namespace MarkAsJunk
             }
         }
 
-        public static CompJunkMark Comp(Thing t)
-        {
-            return (t as ThingWithComps)?.GetComp<CompJunkMark>();
-        }
-
-        /// <summary>Fast null-safe check used on the storage hot path.</summary>
-        public static bool IsMarkedJunk(Thing t)
-        {
-            return Comp(t)?.MarkedJunk ?? false;
-        }
-
         public static void SetJunk(Thing t, bool value)
         {
             CompJunkMark compJunkMark = Comp(t);
@@ -100,6 +91,100 @@ namespace MarkAsJunk
             {
                 DebugLog.Verbose("cannot set junk flag on " + t?.LabelShort + " - no CompJunkMark attached.");
             }
+        }
+
+        private static readonly ConditionalWeakTable<Map, HashSet<Thing>> overlayThings =
+            new ConditionalWeakTable<Map, HashSet<Thing>>();
+
+        /// <summary>Keeps the per-map overlay registry in sync. Called from the
+        /// mark setter and from SpawnSetup. Items are DrawerType.MapMeshOnly -
+        /// baked into the static map mesh - so they never get a per-frame comp
+        /// PostDraw like animated buildings do; that is exactly how vanilla
+        /// forbidden icons work too (CompForbiddable registers with the map's
+        /// overlay system instead of drawing). The draw pass prunes despawned
+        /// leftovers. ConditionalWeakTable keys the registry by map so map
+        /// instances are never kept alive by it.</summary>
+        public static void OverlayNotifySpawnState(Thing t, Map map, bool marked)
+        {
+            if (map == null)
+            {
+                return;
+            }
+            HashSet<Thing> set = overlayThings.GetOrCreateValue(map);
+            if (marked)
+            {
+                set.Add(t);
+            }
+            else
+            {
+                set.Remove(t);
+            }
+        }
+
+        private static Material junkOverlayMatInt;
+
+        /// <summary>The comp's junk mark as a small icon drawn over the item in
+        /// the world, the way forbidden items show one. Vanilla's OverlayDrawer
+        /// only supports a closed set of hardcoded overlay types, so this draws
+        /// its own quad (same MetaOverlay shader and mesh size as the forbidden
+        /// icon). Positioned at the top of the cell while the forbidden icon
+        /// sits at the bottom, so an item that is both forbidden and junk shows
+        /// both icons without overlap. The material is built once from the
+        /// shared gizmo icon (with its fallback) and reused.</summary>
+        public static void DrawJunkOverlay(Thing t)
+        {
+            if (junkOverlayMatInt == null)
+            {
+                junkOverlayMatInt = MaterialPool.MatFrom(GizmoIcon, ShaderDatabase.MetaOverlay, Color.white);
+            }
+            Vector3 drawPos = t.DrawPos;
+            drawPos.z += t.RotatedSize.z * 0.25f;
+            drawPos.y = AltitudeLayer.MetaOverlays.AltitudeFor() + 0.15f;
+            Graphics.DrawMesh(MeshPool.plane05, drawPos, Quaternion.identity, junkOverlayMatInt, 0);
+        }
+
+        /// <summary>Per-frame draw for one map, invoked from the
+        /// DynamicDrawManager patch. Prunes things that despawned since the
+        /// last frame (carried away, merged, destroyed) instead of hooking
+        /// every despawn path.</summary>
+        public static void DrawJunkOverlays(Map map)
+        {
+            if (!MarkAsJunkMod.Active || !MarkAsJunkMod.ShowJunkIcon
+                || !overlayThings.TryGetValue(map, out HashSet<Thing> set))
+            {
+                return;
+            }
+            List<Thing> stale = null;
+            foreach (Thing t in set)
+            {
+                if (!t.Spawned || t.Map != map)
+                {
+                    (stale ??= new List<Thing>()).Add(t);
+                    continue;
+                }
+                if (!t.Fogged())
+                {
+                    DrawJunkOverlay(t);
+                }
+            }
+            if (stale != null)
+            {
+                foreach (Thing t in stale)
+                {
+                    set.Remove(t);
+                }
+            }
+        }
+
+        public static CompJunkMark Comp(Thing t)
+        {
+            return (t as ThingWithComps)?.GetComp<CompJunkMark>();
+        }
+
+        /// <summary>Fast null-safe check used on the storage hot path.</summary>
+        public static bool IsMarkedJunk(Thing t)
+        {
+            return Comp(t)?.MarkedJunk ?? false;
         }
     }
 }

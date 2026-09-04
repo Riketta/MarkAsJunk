@@ -17,6 +17,9 @@
   <MarkAsJunk.AutoMarkDroppedGear>Auto-mark discarded apparel</MarkAsJunk.AutoMarkDroppedGear>
   <MarkAsJunk.AutoMarkDroppedGear.Tip>When a colonist takes apparel off because it no longer passes their apparel policy (e.g. tattered clothes), it is marked as junk automatically.\n\nApparel that still passes the policy is never marked - neither pieces swapped out for a better one, nor apparel moved to caravans or dropped on your order. With the default "Anything" policy nothing fails the filter, so nothing is ever auto-marked.</MarkAsJunk.AutoMarkDroppedGear.Tip>
 
+  <MarkAsJunk.ShowJunkIcon>Show junk icon on items</MarkAsJunk.ShowJunkIcon>
+  <MarkAsJunk.ShowJunkIcon.Tip>Marked items show a small junk icon in the world, the same way forbidden items do. Turning this off changes nothing else - routing and hauling are unaffected.</MarkAsJunk.ShowJunkIcon.Tip>
+
   <MarkAsJunk.LogOverview>Log junk overview</MarkAsJunk.LogOverview>
   <MarkAsJunk.LogOverview.Tip>Writes one block per loaded map to the log: every junk dump and the count of junk-marked items.</MarkAsJunk.LogOverview.Tip>
 
