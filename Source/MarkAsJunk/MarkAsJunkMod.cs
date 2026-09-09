@@ -41,6 +41,12 @@ namespace MarkAsJunk
         /// mirroring vanilla's forbidden overlay (default true).</summary>
         public bool showJunkIcon = true;
 
+        /// <summary>When a junk-marked corpse is destroyed (smelting/destroy
+        /// bills, decay), the worn apparel and equipped weapon it still holds
+        /// are dropped as junk instead of being silently destroyed with the
+        /// corpse. Inventory keeps vanilla behavior (default true).</summary>
+        public bool cascadeJunkFromCorpses = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -50,6 +56,7 @@ namespace MarkAsJunk
             Scribe_Values.Look(ref smelterRecipes, "smelterRecipes", true);
             Scribe_Values.Look(ref autoMarkDroppedGear, "autoMarkDroppedGear", true);
             Scribe_Values.Look(ref showJunkIcon, "showJunkIcon", true);
+            Scribe_Values.Look(ref cascadeJunkFromCorpses, "cascadeJunkFromCorpses", true);
         }
     }
 
@@ -74,6 +81,9 @@ namespace MarkAsJunk
         /// <summary>Convenience for the "junk overlay icon" setting.</summary>
         public static bool ShowJunkIcon => Settings?.showJunkIcon ?? true;
 
+        /// <summary>Convenience for the "cascade junk from corpses" setting.</summary>
+        public static bool CascadeJunkFromCorpses => Settings?.cascadeJunkFromCorpses ?? true;
+
         public MarkAsJunkMod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<MarkAsJunkSettings>();
@@ -93,6 +103,7 @@ namespace MarkAsJunk
             PatchSafe(harmony, typeof(Patch_StorageGroupUtility_SetStorageGroup));
             PatchSafe(harmony, typeof(Patch_ApparelTracker_TryDrop));
             PatchSafe(harmony, typeof(Patch_DynamicDrawManager_DrawDynamicThings));
+            PatchSafe(harmony, typeof(Patch_Corpse_Destroy));
             PatchSafe(harmony, typeof(Patch_RecipeDef_WorkAmountTotal));
             DebugLog.Message("loaded (enabled=" + (Settings.enabled ? "true" : "false")
                 + ", debugLevel=" + (DebugLogLevel)Settings.debugLevel + ").");
@@ -136,6 +147,9 @@ namespace MarkAsJunk
             list.Gap(6f);
 
             list.CheckboxLabeled("MarkAsJunk.AutoMarkDroppedGear".Translate(), ref Settings.autoMarkDroppedGear, "MarkAsJunk.AutoMarkDroppedGear.Tip".Translate());
+            list.Gap(6f);
+
+            list.CheckboxLabeled("MarkAsJunk.CascadeJunkFromCorpses".Translate(), ref Settings.cascadeJunkFromCorpses, "MarkAsJunk.CascadeJunkFromCorpses.Tip".Translate());
             list.Gap(6f);
 
             bool smelterRecipes = Settings.smelterRecipes;

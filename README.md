@@ -32,7 +32,9 @@ time.
 4. **Smelt or destroy junk** - electric smelters gain two bills, both
    consuming whole stacks: **smelt/destroy junk** (smeltable things return
    part of their resources, everything else is destroyed) and **destroy
-   junk** (much faster, no resources).
+   junk** (much faster, no resources). Junk-marked corpses cascade: destroying
+   one drops the apparel and weapon it still holds as junk, instead of
+   silently destroying them with the corpse.
 5. **Let colonists toss their own rags (optional)** - with a restrictive
    apparel policy (e.g. hit points above 50%), a colonist taking off apparel
    that no longer passes it drops it straight to the junk flow. Apparel
@@ -52,6 +54,8 @@ simply flows back into normal storage. Nothing is marked by default.
 - **Auto-mark discarded apparel** (default on) - apparel taken off because it
   fails the wearer's apparel policy is marked as junk; pieces swapped for
   better ones never are.
+- **Cascade junk from corpses** (default on) - destroying a junk-marked corpse
+  drops the gear it still holds as junk instead of destroying it silently.
 - **Show junk icon on items** (default on) - the small world overlay icon on
   marked items.
 - **Debug logging** - Off / Basic / Verbose, plus a one-click **junk
@@ -95,6 +99,10 @@ For modders and the curious - no def, DLC or mod lists are hardcoded:
   Their ingredient filter is a small `ThingFilter` subclass
   (`ThingFilter_JunkOnly`), because "marked as junk" is per-thing state that
   no def-level filter can express.
+- Junk-marked corpses cascade their mark: a prefix on `Corpse.Destroy` drops
+  the worn apparel and equipped weapon as junk before vanilla's
+  `PostCorpseDestroy` wipes them, covering smelting bills, decay and any
+  other destruction of a spawned corpse.
 - Debug logging (Basic/Verbose) covers marks, flags, routing decisions and
   patch application.
 
