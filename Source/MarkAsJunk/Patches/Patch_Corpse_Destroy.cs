@@ -12,9 +12,11 @@ namespace MarkAsJunk
     /// corpse's position as junk, instead of being silently destroyed with it.
     /// Vanilla's Corpse.Destroy -> PostCorpseDestroy destroys everything the
     /// pawn still holds; the drops here make those wipes no-ops. The inventory
-    /// ("pockets") is left to vanilla. Unspawned corpses (graves, containers,
-    /// world pawns) keep vanilla behavior, and corpse stripping already drops
-    /// gear on its own.
+    /// ("pockets") is dropped too but stays unmarked - normal loot for normal
+    /// storage - because with gear-keeping mods (e.g. KeepYourGear) corpses
+    /// can hold real loot that must not vanish. Unspawned corpses (graves,
+    /// containers, world pawns) keep vanilla behavior, and corpse stripping
+    /// already drops gear on its own.
     /// Implemented as a prefix because the vanilla body runs after it and
     /// wipes the pawn's trackers - post-drop they are empty.</summary>
     [HarmonyPatch(typeof(Corpse), "Destroy")]
@@ -36,6 +38,7 @@ namespace MarkAsJunk
                     return;
                 }
                 int marked = 0;
+                int droppedInventory = 0;
                 JunkMarkUtility.BulkMarking = true;
                 try
                 {
@@ -61,15 +64,22 @@ namespace MarkAsJunk
                         }
                         pawn.equipment.DropAllEquipment(__instance.PositionHeld, forbid: false);
                     }
+                    if (pawn.inventory != null && pawn.inventory.innerContainer.TotalStackCount > 0)
+                    {
+                        // Pockets stay unmarked loot: haulers bring them to
+                        // normal storage and the player decides per item.
+                        droppedInventory = pawn.inventory.innerContainer.TotalStackCount;
+                        pawn.inventory.DropAllNearPawn(__instance.PositionHeld, forbid: false);
+                    }
                 }
                 finally
                 {
                     JunkMarkUtility.BulkMarking = false;
                 }
-                if (marked > 0 && DebugLog.MessageEnabled)
+                if ((marked > 0 || droppedInventory > 0) && DebugLog.MessageEnabled)
                 {
                     DebugLog.Message("cascade-marked " + marked + " dropped items as junk from corpse of "
-                        + pawn.LabelShort + ".");
+                        + pawn.LabelShort + " (plus " + droppedInventory + " unmarked inventory items).");
                 }
             }
             catch (Exception ex)

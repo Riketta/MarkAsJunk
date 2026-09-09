@@ -25,7 +25,7 @@ Mark any item as junk and let your colonists do the sorting: haulers keep junk o
 
 [b]Smelter bills[/b]
 [list][*]Electric smelters gain "smelt/destroy junk" (smeltable things return part of their resources, everything else is destroyed) and "destroy junk" (much faster, no resources). Both bills consume whole stacks and feed exclusively on marked items.
-[*]Junk-marked corpses cascade the mark: destroying one drops the apparel and weapon it still holds as junk instead of silently destroying them with the corpse.[/list]
+[*]Junk-marked corpses cascade the mark: destroying one drops the apparel and weapon it still holds as junk instead of silently destroying them with the corpse, and its inventory drops as normal unmarked loot.[/list]
 
 [h3]Settings[/h3]
 Master switch (marks and flags are kept while disabled), "junk needs an existing dump" so items can never be stranded, toggles for the smelter bills and for auto-marking discarded apparel, plus debug logging (Off / Basic / Verbose) and a one-click junk overview that lists every dump, auto-mark storage and marked item.

@@ -44,6 +44,24 @@ While a dump exists on a map, all other storage there rejects junk, so pawns
 actively sort junk out of your main stockpiles. Remove the last dump and junk
 simply flows back into normal storage. Nothing is marked by default.
 
+## Playing with gear-keeping mods
+
+In vanilla, a pawn's weapon and inventory drop on the floor at the moment of
+death and only apparel stays on the corpse. Mods like
+[KeepYourGear](https://github.com/Riketta/KeepYourGear) change that: pawns
+keep their weapon and inventory when downed or dead, so a corpse can hold
+real loot.
+
+Mark as Junk needs no per-mod support for this and never interferes with
+them - it does not block or duplicate their drops, and gear kept on downed
+(living) pawns is untouched. The corpse cascade is where the two meet: with
+**Cascade junk from corpses** on, destroying a junk-marked corpse brings out
+everything it still holds, so nothing is silently lost with the body -
+apparel and weapon come out marked as junk (straight to your dumps and
+smelters), the inventory comes out as normal unmarked loot for your regular
+storage. This works the same for any mod that keeps gear on bodies, known or
+future.
+
 ## Mod settings
 
 - **Enabled** - master switch. Marks and flags are kept while disabled.
@@ -55,7 +73,8 @@ simply flows back into normal storage. Nothing is marked by default.
   fails the wearer's apparel policy is marked as junk; pieces swapped for
   better ones never are.
 - **Cascade junk from corpses** (default on) - destroying a junk-marked corpse
-  drops the gear it still holds as junk instead of destroying it silently.
+  drops the gear it still holds as junk (weapon and apparel); its inventory
+  drops as normal unmarked loot instead of being destroyed.
 - **Show junk icon on items** (default on) - the small world overlay icon on
   marked items.
 - **Debug logging** - Off / Basic / Verbose, plus a one-click **junk
@@ -100,9 +119,11 @@ For modders and the curious - no def, DLC or mod lists are hardcoded:
   (`ThingFilter_JunkOnly`), because "marked as junk" is per-thing state that
   no def-level filter can express.
 - Junk-marked corpses cascade their mark: a prefix on `Corpse.Destroy` drops
-  the worn apparel and equipped weapon as junk before vanilla's
-  `PostCorpseDestroy` wipes them, covering smelting bills, decay and any
-  other destruction of a spawned corpse.
+  the worn apparel and equipped weapon as junk (inventory as unmarked loot)
+  before vanilla's `PostCorpseDestroy` wipes them, covering smelting bills,
+  decay and any other destruction of a spawned corpse. Drop calls pass
+  through gear-keeping mods' filters (e.g. KeepYourGear) untouched, since
+  those only block drops for pawns they marked during downing/death.
 - Debug logging (Basic/Verbose) covers marks, flags, routing decisions and
   patch application.
 
