@@ -44,8 +44,11 @@ namespace MarkAsJunk
         /// <summary>When a junk-marked corpse is destroyed (smelting/destroy
         /// bills, decay), the worn apparel and equipped weapon it still holds
         /// are dropped as junk instead of being silently destroyed with the
-        /// corpse. Inventory keeps vanilla behavior (default true).</summary>
-        public bool cascadeJunkFromCorpses = true;
+        /// corpse; the inventory drops as unmarked loot. Opt-in (default
+        /// false): the one feature that changes vanilla outcomes - gear that
+        /// vanilla destroys with the corpse appears on the ground instead,
+        /// adding hauling work and floor clutter.</summary>
+        public bool cascadeJunkFromCorpses = false;
 
         public override void ExposeData()
         {
@@ -56,7 +59,7 @@ namespace MarkAsJunk
             Scribe_Values.Look(ref smelterRecipes, "smelterRecipes", true);
             Scribe_Values.Look(ref autoMarkDroppedGear, "autoMarkDroppedGear", true);
             Scribe_Values.Look(ref showJunkIcon, "showJunkIcon", true);
-            Scribe_Values.Look(ref cascadeJunkFromCorpses, "cascadeJunkFromCorpses", true);
+            Scribe_Values.Look(ref cascadeJunkFromCorpses, "cascadeJunkFromCorpses", false);
         }
     }
 
@@ -82,7 +85,7 @@ namespace MarkAsJunk
         public static bool ShowJunkIcon => Settings?.showJunkIcon ?? true;
 
         /// <summary>Convenience for the "cascade junk from corpses" setting.</summary>
-        public static bool CascadeJunkFromCorpses => Settings?.cascadeJunkFromCorpses ?? true;
+        public static bool CascadeJunkFromCorpses => Settings?.cascadeJunkFromCorpses ?? false;
 
         public MarkAsJunkMod(ModContentPack content) : base(content)
         {
