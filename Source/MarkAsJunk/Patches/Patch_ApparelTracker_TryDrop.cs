@@ -19,6 +19,9 @@ namespace MarkAsJunk
     /// which covers all non-player pawns) never drop anything that fails, so
     /// they are never affected. Inventory moves and caravan handling do not
     /// pass through here, and death does not drop apparel either.
+    /// For DEAD pawns (corpse strip and the auto-strip before a corpse is
+    /// hauled to a bill, RecipeDef.autoStripCorpses) the cascade rule applies
+    /// instead: whatever falls off a junk-marked corpse is marked as junk.
     /// TargetMethod instead of an attribute argument list because the out
     /// parameter type (typeof(Apparel).MakeByRefType()) is not a compile-time
     /// constant.</summary>
@@ -35,16 +38,35 @@ namespace MarkAsJunk
         {
             try
             {
-                if (!__result || !MarkAsJunkMod.Active || !MarkAsJunkMod.AutoMarkDroppedGear)
-                {
-                    return;
-                }
-                ApparelPolicy policy = __instance.pawn?.outfits?.CurrentApparelPolicy;
-                if (policy?.filter == null)
+                if (!__result || !MarkAsJunkMod.Active)
                 {
                     return;
                 }
                 Thing thing = resultingAp ?? ap;
+                Pawn pawn = __instance.pawn;
+                if (pawn.Dead)
+                {
+                    if (MarkAsJunkMod.CascadeJunkFromCorpses && thing != null && !thing.Destroyed
+                        && JunkMarkUtility.IsMarkedJunk(pawn.Corpse))
+                    {
+                        JunkMarkUtility.SetJunk(thing, value: true);
+                        if (DebugLog.MessageEnabled)
+                        {
+                            DebugLog.Message("cascade-marked " + thing.LabelShort + " as junk from corpse of "
+                                + pawn.LabelShort + ".");
+                        }
+                    }
+                    return;
+                }
+                if (!MarkAsJunkMod.AutoMarkDroppedGear)
+                {
+                    return;
+                }
+                ApparelPolicy policy = pawn.outfits?.CurrentApparelPolicy;
+                if (policy?.filter == null)
+                {
+                    return;
+                }
                 // Still allowed by the policy: the pawn is swapping a good item
                 // for a better one - the mark stays off.
                 if (thing == null || thing.Destroyed || policy.filter.Allows(thing))
@@ -54,7 +76,7 @@ namespace MarkAsJunk
                 JunkMarkUtility.SetJunk(thing, value: true);
                 if (DebugLog.MessageEnabled)
                 {
-                    DebugLog.Message("auto-marked " + thing.LabelShort + " as junk: " + __instance.pawn.LabelShort
+                    DebugLog.Message("auto-marked " + thing.LabelShort + " as junk: " + pawn.LabelShort
                         + " dropped apparel that fails their policy '" + policy.label + "'.");
                 }
             }

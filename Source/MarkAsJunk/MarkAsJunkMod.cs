@@ -102,6 +102,7 @@ namespace MarkAsJunk
             PatchSafe(harmony, typeof(Patch_SlotGroup_NotifyAddedCell));
             PatchSafe(harmony, typeof(Patch_StorageGroupUtility_SetStorageGroup));
             PatchSafe(harmony, typeof(Patch_ApparelTracker_TryDrop));
+            PatchSafe(harmony, typeof(Patch_Pawn_EquipmentTracker_TryDropEquipment));
             PatchSafe(harmony, typeof(Patch_DynamicDrawManager_DrawDynamicThings));
             PatchSafe(harmony, typeof(Patch_Corpse_Destroy));
             PatchSafe(harmony, typeof(Patch_RecipeDef_WorkAmountTotal));

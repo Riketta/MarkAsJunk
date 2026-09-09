@@ -121,9 +121,14 @@ For modders and the curious - no def, DLC or mod lists are hardcoded:
 - Junk-marked corpses cascade their mark: a prefix on `Corpse.Destroy` drops
   the worn apparel and equipped weapon as junk (inventory as unmarked loot)
   before vanilla's `PostCorpseDestroy` wipes them, covering smelting bills,
-  decay and any other destruction of a spawned corpse. Drop calls pass
-  through gear-keeping mods' filters (e.g. KeepYourGear) untouched, since
-  those only block drops for pawns they marked during downing/death.
+  decay and any other destruction of a spawned corpse. Additionally, the
+  game strips a corpse when it is hauled to a bill
+  (`RecipeDef.autoStripCorpses`) - that strip-drop is cascade-marked too via
+  the dead-pawn branches of the apparel/equipment drop funnels
+  (`Pawn_ApparelTracker.TryDrop`, `Pawn_EquipmentTracker.TryDropEquipment`).
+  Drop calls pass through gear-keeping mods' filters (e.g. KeepYourGear)
+  untouched, since those only block drops for pawns they marked during
+  downing/death.
 - Debug logging (Basic/Verbose) covers marks, flags, routing decisions and
   patch application.
 
